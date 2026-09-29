@@ -1,0 +1,26 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Original reminders-style list artwork (not Apple's copyrighted icon):
+         three colored dots with grey text lines on white. -->
+    <path
+        android:fillColor="#FF9500"
+        android:pathData="M30,31m-7,0a7,7 0,1 1,14 0a7,7 0,1 1,-14 0" />
+    <path
+        android:fillColor="#D8D8DE"
+        android:pathData="M42,28.5h36a2.5,2.5 0,0 1,2.5 2.5v3a2.5,2.5 0,0 1,-2.5 2.5h-36a2.5,2.5 0,0 1,-2.5 -2.5v-3a2.5,2.5 0,0 1,2.5 -2.5z" />
+    <path
+        android:fillColor="#34C759"
+        android:pathData="M30,54m-7,0a7,7 0,1 1,14 0a7,7 0,1 1,-14 0" />
+    <path
+        android:fillColor="#D8D8DE"
+        android:pathData="M42,51.5h36a2.5,2.5 0,0 1,2.5 2.5v3a2.5,2.5 0,0 1,-2.5 2.5h-36a2.5,2.5 0,0 1,-2.5 -2.5v-3a2.5,2.5 0,0 1,2.5 -2.5z" />
+    <path
+        android:fillColor="#007AFF"
+        android:pathData="M30,77m-7,0a7,7 0,1 1,14 0a7,7 0,1 1,-14 0" />
+    <path
+        android:fillColor="#D8D8DE"
+        android:pathData="M42,74.5h36a2.5,2.5 0,0 1,2.5 2.5v3a2.5,2.5 0,0 1,-2.5 2.5h-36a2.5,2.5 0,0 1,-2.5 -2.5v-3a2.5,2.5 0,0 1,2.5 -2.5z" />
+</vector>

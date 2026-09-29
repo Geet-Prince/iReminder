@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.IReminder" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <!-- Background visible behind the transparent status/nav bars;
+             resolves to the dark variant from values-night in dark mode. -->
+        <item name="android:windowBackground">@color/app_window_background</item>
+        <!-- Required for WebView auto-darkening (Dark / System-dark mode) to apply. -->
+        <item name="android:forceDarkAllowed">true</item>
+        <!-- Transparent system bars for an edge-to-edge look -->
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+    </style>
+</resources>

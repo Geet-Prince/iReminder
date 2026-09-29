@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24"
+    android:tint="#FFFFFF">
+    <!-- Sun: filled center + 8 rays -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M17,12a5,5 0 1,1 -10,0a5,5 0 1,1 10,0z" />
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M12,1L12,3M12,21L12,23M4.2,4.2L5.6,5.6M18.4,18.4L19.8,19.8M1,12L3,12M21,12L23,12M4.2,19.8L5.6,18.4M18.4,5.6L19.8,4.2" />
+</vector>

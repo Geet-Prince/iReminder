@@ -1,0 +1,59 @@
+name: Bug report
+description: Report a problem with iReminder
+title: "[Bug] "
+labels: ["bug", "needs triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug.
+
+        **Please do not include your Apple ID, email address, password, or any
+        reminder content in your report.** Redact anything personal.
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: A clear description of the problem.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect to happen?
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Open iReminder
+        2. Tap ...
+        3. Observe ...
+    validations:
+      required: true
+
+  - type: input
+    id: app-version
+    attributes:
+      label: iReminder version
+      placeholder: v1.0.0
+    validations:
+      required: true
+
+  - type: input
+    id: android-version
+    attributes:
+      label: Android version and device
+      placeholder: Android 14, Pixel 7
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant log output
+      description: Optional. `adb logcat` output is often very helpful.
+      render: shell

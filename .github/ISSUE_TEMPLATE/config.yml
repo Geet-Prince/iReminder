@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Question or usage help
+    url: https://github.com/Geet-Prince/iReminder/discussions
+    about: Ask how to use iReminder, or get help with an Apple account issue.
+  - name: Security vulnerability
+    url: https://github.com/Geet-Prince/iReminder/security
+    about: Report a vulnerability privately. Please do not open a public issue.
+  - name: iCloud / Apple account problem
+    url: https://support.apple.com
+    about: Sign-in, two-factor authentication, and iCloud service issues are handled by Apple.

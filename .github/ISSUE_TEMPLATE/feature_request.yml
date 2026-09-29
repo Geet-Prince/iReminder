@@ -1,0 +1,44 @@
+name: Feature request
+description: Suggest an idea for iReminder
+title: "[Feature] "
+labels: ["enhancement", "needs triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting an improvement.
+
+        iReminder is intentionally a small web client, so a request is much
+        more likely to be accepted if it stays lightweight, needs no extra
+        permissions, and does not collect any data.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem would this solve?
+      description: Describe the problem rather than the solution.
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed change
+    validations:
+      required: true
+
+  - type: dropdown
+    id: tradeoff
+    attributes:
+      label: Does this add permissions, background work, or data collection?
+      options:
+        - No — none of these
+        - Maybe — not sure
+        - Yes — it would need at least one
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
