@@ -273,6 +273,15 @@ Please report security issues responsibly — see [SECURITY.md](SECURITY.md).
 Released under the [MIT Licence](LICENSE). The source code is open and you
 are free to inspect, modify, and redistribute it under those terms.
 
+## Credits
+
+- App icon: **Reminders** icon by [Icons8](https://icons8.com/icon/set/reminders)
+  / FlatIcons, used under the [Icons8 Licence](https://icons8.com/license) and
+  composited onto a custom gradient background. See
+  [ATTRIBUTIONS.md](ATTRIBUTIONS.md) for full third-party credits.
+- Runtime dependency: [AndroidX AppCompat](https://developer.android.com/jetpack/androidx/releases/appcompat)
+  (Apache 2.0).
+
 ## Disclaimer
 
 > iReminder is an independent open-source project and is not affiliated with,
