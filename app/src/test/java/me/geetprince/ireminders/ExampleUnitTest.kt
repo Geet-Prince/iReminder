@@ -1,4 +1,4 @@
-package com.example.ireminders
+package me.geetprince.ireminders
 
 import org.junit.Test
 

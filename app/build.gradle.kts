@@ -21,13 +21,13 @@ val releaseKeyAlias = signingValue("IREMEMINDER_KEY_ALIAS", "IREMEMINDER_KEY_ALI
 val releaseKeyPassword = signingValue("IREMEMINDER_KEY_PASSWORD", "IREMEMINDER_KEY_PASSWORD")
 
 android {
-    namespace = "com.example.ireminders"
+    namespace = "me.geetprince.ireminders"
     compileSdk {
         version = release(37)
     }
 
     defaultConfig {
-        applicationId = "com.example.ireminders"
+        applicationId = "me.geetprince.ireminders"
         minSdk = 24
         targetSdk = 37
         versionCode = 1

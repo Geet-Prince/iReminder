@@ -1,4 +1,4 @@
-package com.example.ireminders;
+package me.geetprince.ireminders;
 
 import android.app.Activity;
 import android.content.Context;
@@ -15,10 +15,13 @@ import android.view.WindowInsetsController;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import android.annotation.TargetApi;
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import android.webkit.CookieManager;
+import android.webkit.RenderProcessGoneDetail;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
@@ -152,15 +155,16 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this,
                     currentlyNight ? "Light theme" : "Dark theme",
                     Toast.LENGTH_SHORT).show();
-            // Spin while swapping, then recreate to apply the new night mode.
-            // The Apple session is cookie-based so login is preserved.
-            v.animate().rotationBy(180f).setDuration(250)
-                    .withEndAction(this::recreate).start();
+            // saveThemePref() calls setDefaultNightMode(), which already
+            // recreates this activity. Calling recreate() again here would
+            // destroy the WebView twice; the second teardown can SIGSEV the
+            // still-live renderer, which Crashpad escalates into a full app
+            // crash. The Apple session is cookie-based so login survives.
+            v.animate().rotationBy(180f).setDuration(250).start();
         });
         themeButton.setOnLongClickListener(v -> {
             saveThemePref("system");
             Toast.makeText(this, "Following system theme", Toast.LENGTH_SHORT).show();
-            recreate();
             return true;
         });
     }
@@ -269,6 +273,30 @@ public class MainActivity extends AppCompatActivity {
                 }
                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                 startActivity(intent);
+                return true;
+            }
+
+            /**
+             * The renderer process died (out-of-memory, or a WebView bug).
+             * Returning false would leave the app with a dead WebView, and
+             * letting it propagate lets Crashpad abort the whole process.
+             * Rebuild the WebView from scratch instead so a renderer crash
+             * costs the user a page reload, not the entire app.
+             */
+            @Override
+            @TargetApi(Build.VERSION_CODES.O)
+            public boolean onRenderProcessGone(WebView wv, RenderProcessGoneDetail detail) {
+                if (webView != null) {
+                    webView.destroy();
+                    webView = null;
+                }
+                WebView replacement = findViewById(R.id.webview);
+                if (replacement == null) {
+                    return true;
+                }
+                webView = replacement;
+                configureWebView(webView);
+                webView.loadUrl(REMINDERS_URL);
                 return true;
             }
         });
