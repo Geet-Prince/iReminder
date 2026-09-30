@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowInsets;
 import android.view.WindowInsetsController;
 import android.widget.ImageButton;
@@ -280,20 +281,31 @@ public class MainActivity extends AppCompatActivity {
              * The renderer process died (out-of-memory, or a WebView bug).
              * Returning false would leave the app with a dead WebView, and
              * letting it propagate lets Crashpad abort the whole process.
-             * Rebuild the WebView from scratch instead so a renderer crash
-             * costs the user a page reload, not the entire app.
+             * Build a fresh WebView so a renderer crash costs the user a page
+             * reload, not the entire app.
              */
             @Override
             @TargetApi(Build.VERSION_CODES.O)
             public boolean onRenderProcessGone(WebView wv, RenderProcessGoneDetail detail) {
-                if (webView != null) {
-                    webView.destroy();
+                ViewGroup parent = wv.getParent() instanceof ViewGroup
+                        ? (ViewGroup) wv.getParent() : null;
+                ViewGroup.LayoutParams params = wv.getLayoutParams();
+                if (parent != null) {
+                    parent.removeView(wv);
+                }
+                wv.destroy();
+                if (webView == wv) {
                     webView = null;
                 }
-                WebView replacement = findViewById(R.id.webview);
-                if (replacement == null) {
+                if (parent == null) {
                     return true;
                 }
+                // findViewById() would return the instance just destroyed, so
+                // construct a new one. It keeps the same id and is added at
+                // index 0 to stay behind the theme button.
+                WebView replacement = new WebView(MainActivity.this);
+                replacement.setId(R.id.webview);
+                parent.addView(replacement, 0, params);
                 webView = replacement;
                 configureWebView(webView);
                 webView.loadUrl(REMINDERS_URL);
