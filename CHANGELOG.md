@@ -12,6 +12,39 @@ Nothing planned yet. Ideas and bug reports are welcome in
 
 ---
 
+## [1.1.0] — 2026-09-30
+
+### Fixed
+
+- **The app no longer crashes when you change the theme.** The toggle
+  recreated the activity twice: `setDefaultNightMode()` already recreates it
+  internally, and the handler then called `recreate()` a second time on an
+  Activity that had already been destroyed. That second teardown destroyed the
+  WebView while its renderer process was still running, so the renderer took a
+  `SIGSEGV` and Crashpad escalated the failure into a full app crash. The
+  redundant `recreate()` call has been removed.
+  - In practice the first tap usually survived, and the crash reliably hit from
+    the second tap onwards, in both the light-to-dark and dark-to-light
+    directions.
+- A WebView renderer crash is now contained instead of being fatal.
+  `onRenderProcessGone()` rebuilds the WebView and reloads the page, so a
+  renderer failure costs you a page reload rather than the whole app.
+
+### Changed
+
+- The application ID is now `me.geetprince.ireminders`, replacing the
+  `com.example.ireminders` placeholder used in v1.0.0.
+
+### Upgrade notes
+
+- **This release cannot be installed over v1.0.0.** The application ID changed,
+  so Android treats it as a different app and refuses to update in place.
+  Uninstall v1.0.0 first, then install this release. You will need to sign in to
+  iCloud again, as the session was stored under the old app ID.
+- Requires Android 7.0 (API 24) or newer, as before.
+
+---
+
 ## [1.0.0] — 2026-09-30
 
 First public release.
@@ -57,5 +90,6 @@ First public release.
 - Released under the [MIT Licence](LICENSE).
 - Requires Android 7.0 (API 24) or newer.
 
-[Unreleased]: https://github.com/Geet-Prince/iReminder/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/Geet-Prince/iReminder/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/Geet-Prince/iReminder/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/Geet-Prince/iReminder/releases/tag/v1.0.0
