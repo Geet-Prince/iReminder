@@ -28,15 +28,15 @@ Android app shell.
 
 ## Download
 
-### Latest Release — v1.0.0
+### Latest Release — v1.2.0
 
-### 👉 [Download iReminder v1.0.0 APK](https://github.com/Geet-Prince/iReminder/releases/download/v1.0.0/iReminder-v1.0.0.apk)
+### 👉 [Download iReminder v1.2.0 APK](https://github.com/Geet-Prince/iReminder/releases/download/v1.2.0/iReminder-v1.2.0.apk)
 
 All versions are on the **[GitHub Releases page →](https://github.com/Geet-Prince/iReminder/releases)**
 
 | | |
 |---|---|
-| **File** | `iReminder-v1.0.0.apk` |
+| **File** | `iReminder-v1.2.0.apk` |
 | **Size** | ~2.5 MB |
 | **Requires** | Android 7.0 (API 24) or newer |
 | **Price** | Free, no ads, no in-app purchases |
@@ -50,7 +50,7 @@ directly to the release page linked above.
 ## Installation
 
 1. Go to the **[latest GitHub Release](https://github.com/Geet-Prince/iReminder/releases/latest)**.
-2. Download **`iReminder-v1.0.0.apk`**.
+2. Download **`iReminder-v1.2.0.apk`**.
 3. Install the APK on your Android device. (Open the downloaded file and tap
    **Install**.)
 4. Open **iReminder** from your app drawer.
@@ -68,7 +68,7 @@ unknown apps from this source"*:
    access → Install unknown apps**).
 2. Find the app you used to open the download — usually your **browser** or
    **Files** app — and allow it to install apps.
-3. Go back and tap the downloaded `iReminder-v1.0.0.apk` again.
+3. Go back and tap the downloaded `iReminder-v1.2.0.apk` again.
 
 You can revoke this permission at any time in the same settings screen. It
 only affects which apps that one source may install, not iReminder itself.
@@ -103,8 +103,13 @@ toggle in the bottom corner so you can switch the appearance instantly.
   asked to log in again every time you open iReminder.
 - **Light and dark themes** — follows your phone's system theme, with a
   one-tap sun/moon toggle if you prefer to override it.
-- **Lightweight** — around 2.5 MB, a single screen, no background services,
-  no battery drain.
+- **Optional local notifications** — iReminder reads the due times shown on the
+  Reminders page and sets local Android alarms, so a reminder can alert you even
+  after you close the app. Off by default, and clearly opt-in. See
+  [Local Notifications](#local-notifications).
+- **Lightweight** — around 2.6 MB, a single screen, no background service and no
+  permanently running WebView. Alarms are registered with Android's
+  `AlarmManager` and fire on their own.
 - **Open source** — the entire source is available under the MIT licence, so
   you can read exactly what the app does.
 - **No advertisements** — no ads, no ad SDKs, no sponsored anything.
@@ -138,6 +143,71 @@ that prompt on Apple's page and must complete it there.
 The stored session lasts as long as **Apple** keeps it valid. If you sign out
 of iCloud elsewhere, change your password, or Apple expires the session, you
 will simply be asked to sign in again.
+
+---
+
+## Local Notifications
+
+> **Please read this first.** These notifications are **generated locally by
+> Android**, based on the reminder data iReminder was able to read from the
+> loaded iCloud Reminders page. They are **not** Apple's official notifications
+> for Android, and they are **not real-time**.
+
+### How it works
+
+1. You turn on **Scheduled reminder notifications** in iReminder's settings.
+2. When the Reminders page finishes loading, iReminder reads the due times
+   shown on the page — the same information you can see on screen.
+3. It converts each due time into an Android alarm.
+4. You close iReminder. Android's `AlarmManager` holds the alarm and fires it at
+   the scheduled time, so the notification appears without the app running.
+5. If you reboot your phone, iReminder re-registers the alarms it had already
+   scheduled.
+
+### What this means in practice — please note
+
+iReminder is a web client, so it can only see reminders **while the page is
+loaded**. It does not run in the background, and it has no push connection to
+Apple.
+
+| You do this | What happens |
+|---|---|
+| Add a reminder on your Mac or iPhone | iReminder will **not** know about it until you next open iReminder or tap **Sync now**. |
+| Change an existing reminder's time elsewhere | The old Android alarm stays until the next sync. |
+| Open iReminder, or tap **Sync now** | The schedule is refreshed to match what is on the page. |
+
+So a reminder you create elsewhere may **not** alert you at its new time, and
+may alert you at a time that has already passed. This is the single biggest
+limitation of the feature, and it is inherent to building notifications from a
+web page rather than from Apple's servers.
+
+### What it does not do
+
+- It does **not** use Apple's private API. It reads the page you are already
+  looking at.
+- It does **not** store, read, or transmit your Apple credentials.
+- It does **not** provide real-time or push notifications from Apple.
+- It does **not** run a background service or keep a WebView alive.
+- It does **not** keep an offline copy of your reminders library.
+
+Because the reminder data comes from Apple's web interface, iReminder reads the
+structure that page presents. If Apple changes that page, scheduled
+notifications may stop updating until the app is updated. iReminder detects this
+and reports it rather than guessing, and a failed sync always leaves your
+existing alarms untouched.
+
+### Permissions
+
+| Permission | Why | When it is asked |
+|---|---|---|
+| `POST_NOTIFICATIONS` | Show the reminder alert (Android 13+) | When you switch notifications **on** |
+| `RECEIVE_BOOT_COMPLETED` | Re-register alarms after a reboot | Never — declared only |
+| `SCHEDULE_EXACT_ALARM` | Fire at the exact reminder time rather than a batched time | When you switch notifications **on**, and only on Android 12+ |
+
+Exact alarms are optional. If you decline, Android delivers the alert at a time
+of its own choosing, so reminders still arrive, just less punctually. The app
+schedules at most the 200 soonest reminders, so a very large list will not
+exhaust Android's per-app alarm limit.
 
 ---
 
@@ -211,12 +281,27 @@ No. iReminder is a web client, so it needs an internet connection to reach
 Apple's servers. It does not cache your reminders on the device for offline
 use.
 
-### Why does it not support notifications, widgets or a home-screen shortcut?
+### Will I get notified about a reminder I add on another device?
 
-Those features would require privileged system access that only a
-cooperatively built app can have. iReminder deliberately stays a simple
-web client, and adds no functionality beyond what the Apple Reminders web
-interface itself provides.
+Not immediately, and this is the main limitation. iReminder reads due times from
+the Reminders page while the app is open. A reminder you add on your Mac, iPhone
+or iPad is invisible to iReminder until you next open the app and let it read
+the page, or tap **Sync now**. iReminder has no push connection to Apple and
+keeps nothing running in the background, so it cannot learn about changes made
+elsewhere.
+
+### Are these Apple's official notifications?
+
+No. They are ordinary Android notifications generated **locally** on your device
+from the reminder data iReminder read from the page. They are not delivered by
+Apple, and they are not part of Apple's Reminders service.
+
+### What happens if Apple changes the Reminders web page?
+
+iReminder reads the structure of Apple's own web interface, not an official API.
+If Apple changes that page, scheduled notifications may stop updating.
+iReminder detects the change, reports the reason, and leaves your existing
+alarms in place rather than clearing them or guessing at the new structure.
 
 ---
 
@@ -235,6 +320,8 @@ interface itself provides.
 
 | Version | Date | Highlights |
 |---|---|---|
+| **v1.2.0** | 2026-09-30 | Optional local reminder notifications. Due times are read from the loaded Reminders page and converted into local Android alarms, with reboot restore and a notification settings panel. |
+| **v1.1.0** | 2026-09-30 | Fixed a crash when switching themes, and corrected the application ID to `me.geetprince.ireminders`. |
 | **v1.0.0** | 2026-09-30 | First public release. Apple Reminders web client for Android, persistent Apple session, light/dark themes, back-button navigation. |
 
 Full details are in the [CHANGELOG.md](CHANGELOG.md).

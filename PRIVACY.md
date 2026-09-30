@@ -18,6 +18,8 @@ information. It is written in plain language on purpose.
   project author.
 - iReminder contains **no advertising**, and no analytics or tracking SDKs.
 - iReminder talks to **Apple** and to nothing else.
+- Reminder notification data stays **on your device**. Nothing about your
+  reminders is sent to the project author or to any third party.
 
 ---
 
@@ -57,13 +59,45 @@ Safari use to keep you logged in.
 
 **iReminder does not decrypt, inspect, log, or transmit this data.**
 
+## Reminder notifications and what they store locally
+
+If you turn on **Scheduled reminder notifications**, iReminder reads the due
+dates, times, titles, list names, and completion state **from the Reminders page
+that is already loaded in the app**, in order to decide which Android alarms to
+register. That reading happens on your device, against the page you are already
+looking at.
+
+To manage those alarms, iReminder keeps a small record in its private app
+storage containing, per scheduled reminder:
+
+- a stable reminder reference
+- the reminder title
+- the due timestamp
+- the list name, whether notes exist, the recurrence text, and the first
+  attached link
+
+This is **scheduling metadata only**. It is not a copy of your Reminders
+library: it holds no reminder body text, no notes content, no attachments, and
+no completed history, and it is limited to reminders that actually have an
+alarm. It is never transmitted anywhere, and it is deleted when you turn
+notifications off or uninstall the app.
+
+Notifications are generated **locally by Android**. They are not delivered by
+Apple and are not real-time: a change you make in iCloud on another device is
+only picked up the next time you open iReminder and let it read the page.
+
+iReminder does not use Apple's private API, and does not attempt to sign in to
+or authenticate against any Apple service other than the public Reminders web
+page you already use.
+
 ## What iReminder does not collect
 
-iReminder collects **no** personal information. Specifically, it does not:
+iReminder collects **no** personal information and sends **no** data to its
+author. Specifically, it does not:
 
 - Collect your name, email address, phone number, or Apple ID
 - Collect or store your Apple ID password
-- Read the contents of your reminders
+- Upload, transmit, or share your reminders, or any part of them
 - Track your location, contacts, photos, files, or clipboard
 - Gather analytics, telemetry, crash traces, or usage statistics
 - Show advertising or ad identifiers
@@ -77,9 +111,13 @@ There is no account to create. There is nothing to sign up for.
 |---|---|
 | `INTERNET` | Required to load Apple's Reminders web interface. Without it the app cannot function. |
 | `ACCESS_NETWORK_STATE` | Lets the app check whether a network connection is available before loading pages. |
+| `POST_NOTIFICATIONS` | Shows the reminder alert. Requested only when you switch notifications on (Android 13+). Declared but unused if you never enable them. |
+| `RECEIVE_BOOT_COMPLETED` | Re-registers scheduled reminder alarms after a reboot, because Android clears all alarms on restart. Declared only. |
+| `SCHEDULE_EXACT_ALARM` | Lets a reminder alert fire at its exact scheduled time rather than a batched time Android picks. Requested only when you switch notifications on, and only on Android 12+. You can decline; reminders still arrive, just less punctually. |
 
-iReminder requests **no** dangerous permissions. It cannot access your
-camera, microphone, contacts, location, files, or device sensors.
+Only `POST_NOTIFICATIONS` is a runtime permission the user can see and control.
+iReminder requests **no** dangerous permissions. It cannot access your camera,
+microphone, contacts, location, files, or device sensors.
 
 ## Data handled by Apple
 

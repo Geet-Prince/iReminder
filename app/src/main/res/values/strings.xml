@@ -1,3 +1,30 @@
 <resources>
     <string name="app_name">iReminder</string>
+
+    <!-- Notification settings -->
+    <string name="notification_channel_name">Reminder notifications</string>
+    <string name="notification_channel_description">Alerts for reminders you have scheduled through iReminder.</string>
+    <string name="notification_due_now">Due now</string>
+    <string name="notification_untitled_reminder">Untitled reminder</string>
+
+    <string name="notifications_title">Notifications</string>
+    <string name="notifications_toggle">Scheduled reminder notifications</string>
+    <string name="notifications_last_synced_never">Last synced: never</string>
+    <string name="notifications_last_synced">Last synced: %1$s</string>
+    <string name="notifications_sync_now">Sync now</string>
+    <string name="notifications_disclaimer">Notifications are generated locally by Android, using the most recent reminder data iReminder was able to read from the iCloud Reminders page. Changes made in iCloud on another device are not picked up until you open iReminder or tap Sync now.</string>
+    <string name="notifications_exact_alarm_rationale">Exact timing lets iReminder notify you at the scheduled reminder time instead of a batched time chosen by Android.</string>
+    <string name="notifications_exact_alarm_grant">Allow</string>
+    <string name="notifications_exact_alarm_skip">Not now</string>
+    <string name="notifications_test_button">Test notification in 30 seconds</string>
+    <string name="notifications_test_scheduled">Test reminder scheduled for 30 seconds from now. Close the app and wait.</string>
+    <string name="notifications_test_title">Test reminder</string>
+    <string name="notifications_sync_unavailable">Reminder data cannot be read from the iCloud page yet, so no alarms were changed. Your existing schedule is unchanged.</string>
+    <string name="notifications_sync_page_not_ready">The iCloud Reminders page has not finished loading yet.</string>
+    <string name="notifications_sync_started">Syncing…</string>
+    <string name="notifications_sync_ok">Sync complete: %1$s.</string>
+    <string name="notifications_sync_failed">Sync failed: %1$s (%2$s). Your existing reminders were left unchanged.</string>
+    <string name="notifications_disabled_toast">Reminder notifications turned off. Existing alarms cancelled.</string>
+    <string name="notifications_enabled_toast">Reminder notifications turned on.</string>
+    <string name="settings_button_description">Notification settings</string>
 </resources>

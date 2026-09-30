@@ -4,6 +4,18 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
+    <!-- Local reminder notifications. POST_NOTIFICATIONS is runtime-requested on
+         Android 13+ only when the user turns notifications on, never at first
+         launch. -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <!-- Android clears all AlarmManager alarms on reboot, so the schedule has
+         to be re-registered when the device comes back up. -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <!-- Lets a reminder fire at its scheduled minute rather than a batched time
+         Android picks. Declared but only requested in context, and every
+         schedule falls back to an inexact alarm when it is not granted. -->
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -27,6 +39,29 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Shows the notification when a scheduled alarm fires. Lightweight by
+             design: no WebView, no network, no iCloud access. -->
+        <receiver
+            android:name=".ReminderNotificationReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="me.geetprince.ireminders.action.REMINDER_DUE" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Re-registers alarms after reboot, app update, or a clock change,
+             all of which can clear the AlarmManager schedule. -->
+        <receiver
+            android:name=".BootReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+                <action android:name="android.intent.action.TIME_SET" />
+                <action android:name="android.intent.action.TIMEZONE_CHANGED" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

@@ -11,6 +11,20 @@
         android:layout_height="match_parent" />
 
     <ImageButton
+        android:id="@+id/notification_button"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="72dp"
+        android:layout_marginBottom="16dp"
+        android:alpha="0.85"
+        android:background="@drawable/bg_settings_button"
+        android:contentDescription="@string/settings_button_description"
+        android:padding="11dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_bell" />
+
+    <ImageButton
         android:id="@+id/theme_button"
         android:layout_width="48dp"
         android:layout_height="48dp"
